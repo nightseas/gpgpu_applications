@@ -3,9 +3,12 @@
 Xiaohai Li (haixiaolee@gamil.com)
 
 ## Introduction
-My hardware platform is Intel Xeon E5-2618L 10-core processor and NVidia GTX1060 6GB graphic card. The OS distro is Ubuntu Mate 16.04.1 x64.
+My hardware platform is Intel Xeon E5-2618L 10-core processor and NVidia GTX1060 6GB graphic card. The OS distro is Ubuntu Mate 16.04.1 LTS x64.
 
-The GTX1060 driver, Ubuntu system, GCC 5.4, torch and CUDA SDK have a compatibility problem that blocks me to use GPU acceleration for Openface. So let's just run it on CPU for now. I'll keep looking into cutorch on GTX1060.
+The GTX1060 driver, Ubuntu system, GCC 5.4, torch and CUDA SDK have a compatibility problem that blocks me to use GPU acceleration for Openface.
+
+To use GTX1060 with CUDA, you need to install CUDA8.0 SDK. Visit [NVidia web site][cuda_info] for more information:
+
 
 ## Preparation
 Install dependence:
@@ -40,17 +43,15 @@ sudo apt-get install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libp
 Fetch OpenCV and switch to version 2.4.13:
 ``` sh
 git clone https://github.com/opencv/opencv.git
+cd opencv
 git checkout 2.4.13
 ```
 
 Use cmake to configure OpenCV with CUDA/OpenCL or OpenMP (multi CPU cores) support.
-
-Note: I failed to compile openCV + CUDA7.5/8.0 on my GTX1060. So only OpenCL is enabled here.
-
 ``` sh
 mkdir build
 cd build
-cmake -D WITH_CUDA=0 -D WITH_OPENMP=1 -D WITH_OPENCL=1 -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
+cmake -D WITH_CUDA=1 -D WITH_OPENMP=1 -D WITH_OPENCL=1 -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local ..
 ```
 
 Compile and install OpenCV, and set -jxx according to your host PC's multi-thread capability:
@@ -66,13 +67,14 @@ For more information refer to the [OpenCV installation guide][opencv_ins].
 Fetch dlib and switch to version 18.18:
 ``` sh
 git clone https://github.com/davisking/dlib.git
-git checkout v18.18
+cd dlib
+git checkout v19.0
 ```
 
 Configure, compile and install dlib:
 ``` sh
-cd dlib-18.16/python_examples
-cmake ../../tools/python  
+cd python_examples
+cmake ../tools/python  
 cmake --build . --config Release -- -j20  
 cp dlib.so /usr/local/lib/python2.7/dist-packages  
 ```
@@ -88,7 +90,7 @@ cd ~/torch-cl
 bash install-deps
 ```
 
-Because there's compatible issue between GCC4.9 and dlib, we should change the default gcc to GCC5.4 before installing cltorch. Edit ./install.sh and replace gcc-4.9 & g++-4.9 to gcc & g++.
+Because there's compatible issue between GCC4.9, boost and dlib, we should change the default gcc to GCC5.4 before installing cltorch. Edit ./install.sh and replace gcc-4.9 & g++-4.9 to gcc & g++.
 ``` sh
 if [[ $(gcc -dumpversion | cut -d . -f 1) == 5 ]]; then {
 #  export CC=gcc-4.9
@@ -119,7 +121,7 @@ luajit -l cltorch -e 'cltorch.test()'
 luajit -l clnn -e 'clnn.test()'
 ```
 
-Once the CUDA issue is fixed, cutorch & cunn are also available:
+The cutorch & cunn are also available:
 ``` sh
 luajit -l cutorch -e 'cutorch.test()'
 luajit -l cunn -e 'nn.testcuda()'
@@ -189,4 +191,5 @@ http://localhost:8000
 Enjoy your Openface time!
 
   [opencv_ins]: http://docs.opencv.org/2.4/doc/tutorials/introduction/linux_install/linux_install.html
+  [cuda_info]: http://developer.nvidia.com/cuda-toolkit
 
