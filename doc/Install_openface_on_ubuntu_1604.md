@@ -175,12 +175,18 @@ Some demos for test:
 To execute the web demo, install some dependence first.
 ``` sh
 demos/web/install-deps.sh
-pip install -r demo/web/requirements.txt
+pip install -r demos/web/requirements.txt
 ```
 
 Start the web server:
 ``` sh
 demos/web/start-servers.sh
+```
+
+Edit this line in start-servers.sh to enable cuda:
+``` sh
+#./demos/web/websocket-server.py --port $WEBSOCKET_PORT 2>&1 | tee $WEBSOCKET_LOG &
+./demos/web/websocket-server.py --cuda --port $WEBSOCKET_PORT 2>&1 | tee $WEBSOCKET_LOG &
 ```
 
 Connect a USB camera to the computer, open Chrome and use the local host address to access demo server:
