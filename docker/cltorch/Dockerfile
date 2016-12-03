@@ -10,8 +10,10 @@ RUN apt-get update && apt-get install -y nano sudo wget build-essential cmake cu
   graphicsmagick libgraphicsmagick1-dev python-numpy zip \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Install NV drivers and openCL lib
-RUN apt-get update && apt-get install -y nvidia-367 nvidia-367-dev nvidia-opencl-icd-367 nvidia-settings \
+RUN apt-get update && apt-get install -y nvidia-367 nvidia-367-dev nvidia-opencl-icd-367 \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Fetch and install cltorch

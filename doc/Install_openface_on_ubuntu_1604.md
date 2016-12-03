@@ -18,16 +18,16 @@ sudo apt-get upgrade
 sudo apt-get install build-essential cmake curl gfortran git libatlas-dev libavcodec-dev libavformat-dev libboost-all-dev libgtk2.0-dev libjpeg-dev liblapack-dev libswscale-dev pkg-config python-dev python-pip wget -y
 ```
 
-Install python packages:
-```sh
-pip install numpy scipy pandas scikit-learn scikit-image  
-```
-
 Install appropriate NVidia drivers and tools for GTX1060:
 ```sh
 sudo apt-get purge nvidia*
 sudo apt-get install nvidia-367 nvidia-367-dev nvidia-opencl-icd-367 nvidia-settings
 sudo apt-get install 
+```
+
+Install python packages:
+```sh
+pip install numpy scipy pandas scikit-learn scikit-image  
 ```
 
 ## Install OpenCV
@@ -112,6 +112,11 @@ Then install cltorch:
 ./install.sh
 ```
 
+You should also link the executable files which are needed by openface:
+``` sh
+ln -s ~/torch-cl/install/bin/* /usr/local/bin
+```
+
 To verify OpenCL features, use these commands below:
 ``` sh
 source ~/torch-cl/install/bin/torch-activate
@@ -151,36 +156,34 @@ luarocks install torchx
 luarocks install optnet
 ```
 
-Fetch and install Openface:
+Fetch Openface:
 ``` sh
 git clone https://github.com/cmusatyalab/openface.git  
 git submodule init  
 git submodule update 
-sudo python setup.py install
 ```
 
-Run get-models script to download Openface and dlib trained models:
+Download Openface and dlib trained models, install openface and everything you need to run the demos:
 ``` sh
-models/get-models.sh
+./models/get-models.sh
+pip install -r requirements.txt
+sudo python setup.py install
+pip install -r demos/web/requirements.txt
+pip install -r training/requirements.txt
+./data/download-lfw-subset.sh
 ```
 
 Some demos for test:
 ``` sh
 # Face comparison demo:
 ./demos/compare.py images/examples/{lennon*,clapton*}
-# Image classifier demo:
-./demos/classifier.py infer models/openface/celeb-classifier.nn4.small2.v1.pkl ./images/examples/carell.jpg
+# Image classifier demo (with CUDA):
+./demos/classifier.py --cuda infer models/openface/celeb-classifier.nn4.small2.v1.pkl ./images/examples/carell.jpg
 ```
 
-To execute the web demo, install some dependence first.
+Real-time face recognition web demo:
 ``` sh
-demos/web/install-deps.sh
-pip install -r demos/web/requirements.txt
-```
-
-Start the web server:
-``` sh
-demos/web/start-servers.sh
+./demos/web/start-servers.sh
 ```
 
 Edit this line in start-servers.sh to enable cuda:
