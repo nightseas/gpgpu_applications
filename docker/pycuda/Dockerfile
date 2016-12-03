@@ -1,6 +1,7 @@
-# PyCUDA docker image bashed on NVidia CUDA 8.0 + Ubuntu 16.04 x64
-# By Xiaohai Li (haixiaolee@gmail.com)
+# Start with NVidia CUDA base image
 FROM nvidia/cuda:8.0-devel-ubuntu16.04
+
+MAINTAINER Xiaohai Li <haixiaolee@gmail.com>
 
 # Install dependent packages
 RUN apt-get -y update && apt-get install -y wget nano python-pip libboost-all-dev python-numpy build-essential python-dev python-setuptools libboost-python-dev libboost-thread-dev
