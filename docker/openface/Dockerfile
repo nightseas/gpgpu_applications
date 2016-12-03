@@ -8,10 +8,12 @@ RUN pip install numpy scipy pandas scikit-learn scikit-image
 
 # Install torch deps
 RUN luarocks install dpnn && \
+  luarocks install image && \
   luarocks install optim  && \
   luarocks install csvigo && \
   luarocks install torchx && \
-  luarocks install optnet
+  luarocks install optnet && \
+  luarocks install tds
 
 # Fetch & install openface
 RUN git clone https://github.com/cmusatyalab/openface.git /root/openface && \
@@ -23,6 +25,9 @@ RUN cd /root/openface && \
     python setup.py install && \
     pip install -r demos/web/requirements.txt && \
     pip install -r training/requirements.txt
+
+RUN cd /root/openface && \
+  ./data/download-lfw-subset.sh
 
 # Expose the ports that are used by web demo
 EXPOSE 8000 9000
