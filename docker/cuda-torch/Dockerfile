@@ -1,6 +1,6 @@
 # Start with NVidia cuDNN base image
 FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
-  
+
 MAINTAINER Xiaohai Li <haixiaolee@gmail.com>
 
 # Install basic deps
