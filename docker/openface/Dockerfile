@@ -1,5 +1,5 @@
 # Start with cutorch + opencv + dlib image
-FROM nightseas/torch-opencv-dlib:cv2.4.13-dlib9.0-cuda8.0-ubuntu16.04
+FROM nightseas/torch-opencv-dlib:cv2.4.13-dlib19.0-cuda8.0-ubuntu16.04
 
 MAINTAINER Xiaohai Li <haixiaolee@gmail.com>
 
@@ -13,11 +13,12 @@ RUN luarocks install dpnn && \
   luarocks install csvigo && \
   luarocks install torchx && \
   luarocks install optnet && \
+  luarocks install graphicsmagick && \
   luarocks install tds
 
 # Fetch & install openface
 RUN git clone https://github.com/cmusatyalab/openface.git /root/openface && \
-  git submodule init && git submodule update
+  cd /root/openface && git submodule init && git submodule update
 
 RUN cd /root/openface && \
     ./models/get-models.sh && \
