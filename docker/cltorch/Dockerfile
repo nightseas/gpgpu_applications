@@ -1,5 +1,5 @@
-# Start with NVidia cuDNN base image
-FROM nvidia/cuda:8.0-cudnn5-devel-ubuntu16.04
+# Start with Ubuntu base image
+FROM ubuntu:16.04
 
 MAINTAINER Xiaohai Li <haixiaolee@gmail.com>
 
@@ -8,12 +8,6 @@ RUN apt-get update && apt-get install -y nano sudo wget build-essential cmake cu
   libatlas-dev libavcodec-dev libavformat-dev libboost-all-dev libgtk2.0-dev libjpeg-dev   \
   liblapack-dev libswscale-dev pkg-config python-dev python-pip software-properties-common \
   graphicsmagick libgraphicsmagick1-dev python-numpy zip \
-  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Install NV drivers and openCL lib
-RUN apt-get update && apt-get install -y nvidia-367 nvidia-367-dev nvidia-opencl-icd-367 \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Fetch and install cltorch
