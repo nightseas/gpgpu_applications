@@ -21,7 +21,7 @@ TBD.
 
 ```sh
 # Nvidia (change /dev/nvidia0 to your GPU)
-docker run --device /dev/nvidiactl --device /dev/nvidia0  --device /dev/nvidia-uvm -it nightseas/pyopencl:nvidia-367
+docker run --device /dev/nvidiactl --device /dev/nvidia0 --device /dev/nvidia-uvm nightseas/pyopencl:nvidia-367
 
 # AMD
 docker run --device /dev/dri nightseas/pyopencl:amdgpu-pro-16.40
