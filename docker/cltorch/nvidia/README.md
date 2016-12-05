@@ -1,5 +1,5 @@
 ## Test
 
 ```sh
-nvidia-docker run nightseas/opencl-torch:nvidia-367
+docker run --device /dev/nvidiactl --device /dev/nvidia0  --device /dev/nvidia-uvm -it nightseas/opencl-torch:nvidia-367
 ```
