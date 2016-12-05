@@ -1,30 +1,33 @@
 ## Tags
 
-#### cuda8.0-ubuntu16.04 (=latest)
-For now it's only Ubuntu 16.04 + CUDA 8.0, which supports NVidia Pascal GPU such as GTX1080/1070/1060. 
+#### latest
+This is only a base image without any drivers.
+
+#### nvidia-367
+Nvidia 367.57 driver integrated, which supports NVidia Pascal GPU such as GTX1080/1070/1060. 
+
+#### amdgpu-pro-16.40
+AMD GPU Pro 16.40-348864 driver integrated, which supports AMD Polaris GPU such as RX480/470.
 
 More information: 
 
- - [CUDA 8.0](http://www.nvidia.com/object/cuda_home_new.html)
+TBD.
 
 ## Requirement
 
-- [NVIDIA Docker](https://github.com/NVIDIA/nvidia-docker) - see [requirements](https://github.com/NVIDIA/nvidia-docker/wiki/CUDA#requirements) for more details.
-
-
+ - You should choose the exactly same version of driver running on both container and host.
 
 ## Test
 
 ```sh
-nvidia-docker run -it nightseas/opencl-torch bash
-luajit -l torch -e 'torch.test()'
-luajit -l nn -e 'nn.test()'
+# Nvidia (change /dev/nvidia0 to your GPU)
+docker run --device /dev/nvidiactl --device /dev/nvidia0  --device /dev/nvidia-uvm -it nightseas/opencl-torch:nvidia-367
 
-luajit -l cltorch -e 'cltorch.test()'
-luajit -l clnn -e 'clnn.test()'
+# AMD
+docker run --device /dev/dri nightseas/opencl-torch:amdgpu-pro-16.40
 ```
 
 
 ## Known Issues
 
- - cutorch and cunn are not supported.
+ - cutorch and cunn are not supported, even for the Nvidia tag.
