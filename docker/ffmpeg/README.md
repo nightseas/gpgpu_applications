@@ -40,7 +40,7 @@ ffmpeg -f rawvideo -s:v 1920x1080 -r 30 -pix_fmt yuv420p -i <input.yuv> -vcodec 
 
 ### Transcode a single video file to N streams
 
-Note: For GTX10xx GPU, only TWO encoders are available at the same time, although the encoder usage are not 100%. Acctually in my, transcoding 2 1080p H264 videos only use 30% of encoder resouces on GTX1080. It seems like a software limitation set by NVIDIA.
+Note: For GTX10xx GPU, only TWO encoders are available at the same time, although the encoder usage are not 100%. Acctually in my case, transcoding 2 1080p H264 videos only use 30% of encoder resouces on GTX1080. It seems like a software limitation set by NVIDIA.
 
 To do 1:N transcode, use the following command:
 
