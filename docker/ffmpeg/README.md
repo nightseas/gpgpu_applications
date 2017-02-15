@@ -1,6 +1,6 @@
 ## Tags
 
-### cuda8.0-ubuntu16.04 (=latest)
+#### cuda8.0-ubuntu16.04 (=latest)
 
 For now it's only Ubuntu 16.04 + CUDA 8.0, which supports NVidia Pascal GPU such as GTX1080/1070/1060. 
 
@@ -40,7 +40,9 @@ ffmpeg -f rawvideo -s:v 1920x1080 -r 30 -pix_fmt yuv420p -i <input.yuv> -vcodec 
 
 ### Transcode a single video file to N streams
 
-To do 1:N transcode, use the following command (for GTX10xx GPU, only TWO encoders are available at the same time):
+Note: For GTX10xx GPU, only TWO encoders are available at the same time, although the encoder usage are not 100%. Acctually in my, transcoding 2 1080p H264 videos only use 30% of encoder resouces on GTX1080. It seems like a software limitation set by NVIDIA.
+
+To do 1:N transcode, use the following command:
 
 ```sh
 ffmpeg -hwaccel cuvid -c:v h264_cuvid -i <input.mp4> -vf scale_npp=1280:720 -vcodec h264_nvenc <output0.mp4> -vf scale_npp 640:480 -vcodec h264_nvenc <output1.mp4>
