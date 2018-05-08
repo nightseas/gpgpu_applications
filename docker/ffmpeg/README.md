@@ -1,12 +1,16 @@
 ## Tags
 
-#### cuda8.0-ubuntu16.04 (=latest)
+#### cuda9.1-ubuntu16.04 (=latest)
 
-For now it's only Ubuntu 16.04 + CUDA 8.0, which supports NVidia Pascal GPU such as GTX1080/1070/1060. 
+Ubuntu 16.04 + CUDA 9.1, which has been verified on NVidia P100.
+
+#### cuda8.0-ubuntu16.04
+
+Ubuntu 16.04 + CUDA 8.0, which supports NVidia Pascal GPU such as GTX1080/1070/1060. 
 
 More information: 
 
- - [CUDA 8.0](http://www.nvidia.com/object/cuda_home_new.html)
+ - [CUDA](http://www.nvidia.com/object/cuda_home_new.html)
  - [FFmpeg with CUDA](https://developer.nvidia.com/ffmpeg)
 
 ## Requirement
@@ -16,7 +20,7 @@ More information:
 ## Test
 
 ```sh
-nvidia-docker run -it --volume path_to_your_data:/root/data nightseas/ffmpeg bash
+docker run -it --runtime=nvidia --volume path_to_your_data:/root/data nightseas/ffmpeg bash
 ```
 
 ### Decode a single H.264 to YUV
@@ -40,10 +44,14 @@ ffmpeg -f rawvideo -s:v 1920x1080 -r 30 -pix_fmt yuv420p -i <input.yuv> -vcodec 
 
 ### Transcode a single video file to N streams
 
-Note: For GTX10xx GPU, only TWO encoders are available at the same time, although the encoder usage are not 100%. Acctually in my case, transcoding 2 1080p H264 videos only use 30% of encoder resouces on GTX1080. It seems like a software limitation set by NVIDIA.
+Note: For GTX10xx GPU, only TWO encoders are available at the same time, although the encoder usage are not 100%. Acctually in my case, transcoding 2 1080p H264 videos only use 30% of encoder resouces on GTX1080. It seems like a software limitation set by NVIDIA. And there's no such limitation on P100.
 
 To do 1:N transcode, use the following command:
 
 ```sh
-ffmpeg -hwaccel cuvid -c:v h264_cuvid -i <input.mp4> -vf scale_npp=1280:720 -vcodec h264_nvenc <output0.mp4> -vf scale_npp 640:480 -vcodec h264_nvenc <output1.mp4>
+ffmpeg -hwaccel cuvid -c:v h264_cuvid -i <input.mp4> -vf scale_npp=1280:720 -vcodec h264_nvenc <output0.mp4> -vf scale_npp=640:480 -vcodec h264_nvenc <output1.mp4>
 ```
+
+## Known Issue
+
+N/A

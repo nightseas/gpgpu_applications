@@ -1,10 +1,16 @@
 # Start with NVidia CUDA base image
-FROM nvidia/cuda:8.0-devel-ubuntu16.04
+FROM nvidia/cuda:9.1-runtime
 
 MAINTAINER Xiaohai Li <haixiaolee@gmail.com>
 
 # Install dependent packages
 RUN apt-get -y update && apt-get install -y wget nano git build-essential yasm pkg-config
+
+RUN git clone https://git.videolan.org/git/ffmpeg/nv-codec-headers.git /root/nv-codec-headers && \
+  cd /root/nv-codec-headers &&\
+  make -j8 && \
+  make install -j8 && \
+  cd /root && rm -rf nv-codec-headers
 
 # Compile and install ffmpeg from source
 RUN git clone https://github.com/FFmpeg/FFmpeg /root/ffmpeg && \
@@ -18,5 +24,7 @@ RUN git clone https://github.com/FFmpeg/FFmpeg /root/ffmpeg && \
   make -j8 && \
   make install -j8 && \
   cd /root && rm -rf ffmpeg
+
+ENV NVIDIA_DRIVER_CAPABILITIES video,compute,utility
 
 WORKDIR /root
