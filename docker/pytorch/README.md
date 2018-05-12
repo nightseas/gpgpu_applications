@@ -19,16 +19,14 @@ More information:
 docker run -it --runtime=nvidia nightseas/pytorch bash
 ```
 
-### 
-
-Pytorch Basic MNIST Example
+### Pytorch Basic MNIST Example
 
 ```sh
 git clone https://github.com/pytorch/examples
 cd examples/mnist
 pip3 install -r requirements.txt
 
-python main.py
+python3 main.py
 ```
 
 ### Pytorch Auto Test Results
@@ -46,7 +44,7 @@ git checkout v0.4.0
 pip3 install -r requirements.txt
 
 cd test
-python run_test.py 
+python3 run_test.py 
 
 --------------------------------------
 
@@ -129,3 +127,4 @@ OK (skipped=3)
 ## Known Issue
 
 N/A
+

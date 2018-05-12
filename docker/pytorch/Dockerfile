@@ -21,4 +21,7 @@ RUN pip3 install numpy && \
   pip3 install http://download.pytorch.org/whl/cu91/torch-0.4.0-cp35-cp35m-linux_x86_64.whl && \
   pip3 install torchvision
 
+# Workaround for pip installation and pytorch test bugs.
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
 WORKDIR /root

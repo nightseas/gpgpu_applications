@@ -16,6 +16,7 @@ More information:
 ## Requirement
 
 - [NVIDIA Docker](https://github.com/NVIDIA/nvidia-docker) - see [requirements](https://github.com/NVIDIA/nvidia-docker/wiki/CUDA#requirements) for more details.
+- [NVIDIA Driver Version Requirements from NV Codec Headers](https://github.com/FFmpeg/nv-codec-headers).
 
 ## Test
 
@@ -51,6 +52,27 @@ To do 1:N transcode, use the following command:
 ```sh
 ffmpeg -hwaccel cuvid -c:v h264_cuvid -i <input.mp4> -vf scale_npp=1280:720 -vcodec h264_nvenc <output0.mp4> -vf scale_npp=640:480 -vcodec h264_nvenc <output1.mp4>
 ```
+
+### Perf Test
+
+Platform: Dual Intel E5-2699v4 + NVIDIA P100
+
+NVIDIA Driver: 390.48
+
+FFmpeg 4.0 + CUDA9.1
+
+
+```sh
+ffmpeg -hwaccel cuvid -c:v h264_cuvid -i big_buck_bunny_1080p_H264_AAC_25fps_7200K.MP4 -vf scale_npp=1280:720 -vcodec h264_nvenc output0.mp4 -vf scale_npp=640:480 -vcodec h264_nvenc output1.mp4
+
+...
+
+frame= 1130 fps=258 q=23.0 Lq=19.0 size=   12277kB time=00:00:45.16 bitrate=2227.1kbits/s dup=10 drop=0 speed=10.3x    
+video:22926kB audio:1412kB subtitle:0kB other streams:0kB global headers:0kB muxing overhead: unknown
+[aac @ 0x2204080] Qavg: 828.371
+[aac @ 0x22aa4c0] Qavg: 828.371
+```
+
 
 ## Known Issue
 
